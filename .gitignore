@@ -107,5 +107,4 @@ output*
 *.sh
 cached*
 *.png
-dataset/cached*
-dataset/*.pkl
+dataset/
