@@ -21,7 +21,7 @@ For all QA dataset, we preprocess them into the MRQA format.
 
 For Text Classification dataset, please refer to https://github.com/allenai/dont-stop-pretraining.
 
-As the text corpus, you should extract context from each dataset and build it as the distinct dataset. (We will provide it as downloadable link if possible.)
+As the text corpus, you should extract context from each dataset and build it as the distinct dataset. (We will provide it as the downloadable link if possible.)
 
 ## How to Run
 1. Meta-training
@@ -37,7 +37,7 @@ $GPUNUM 50 3 0.05
 
 ## TODOs
 
-- [ ]  Update code for support on the text classification
+- [ ]  Update the code for support on the text classification
 - [ ]  Clean up the code including the removal of useless configurations
 - [ ]  Add the text corpus extraction code.
 

@@ -25,7 +25,7 @@ from tqdm import tqdm, trange
 #                                   DistilBertTokenizer,
 #                                   )
 
-from pytorch_transformers import (WEIGHTS_NAME, WarmupLinearSchedule)
+# from pytorch_transformers import (WEIGHTS_NAME, WarmupLinearSchedule)
 
 from transformers import (
                     AdamW,
@@ -33,6 +33,8 @@ from transformers import (
                     DistilBertConfig,
                     DistilBertForQuestionAnswering,
                     DistilBertTokenizer,
+                    get_linear_schedule_with_warmup,
+                    WEIGHTS_NAME
                     )
 
 from qa_util import (read_squad_examples, convert_examples_to_features,
@@ -118,7 +120,7 @@ def train(args, train_dataset, model, tokenizer, meta_training):
         {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
         ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
+    scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, t_total)
     if args.n_gpu > 1:
         model = torch.nn.DataParallel(model, args.devices)
 
@@ -537,13 +539,13 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     return dataset
 
 # CUDA_MAGIC -> avoid cuda gpu exploration
-def cuda_magic():
-    start = time.time()
-    tmp = "./dataset/SQuAD/cached_lm_510_squad_train.txt_bert"
-    with open(tmp, 'rb') as f:
-        _tmp = pickle.load(f)
-    del _tmp
-    print("Elapsed Time for CUDA Magic... {} sec".format(time.time() - start))
+# def cuda_magic():
+#     start = time.time()
+#     tmp = "./dataset/SQuAD/cached_lm_510_squad_train.txt_bert"
+#     with open(tmp, 'rb') as f:
+#         _tmp = pickle.load(f)
+#     del _tmp
+#     print("Elapsed Time for CUDA Magic... {} sec".format(time.time() - start))
 
 def run_qa(args, train_dataset, meta_training, reset_env=True, devices=[], sampled_keys=None):
     # Reallocate argument for Task
@@ -577,8 +579,8 @@ def run_qa(args, train_dataset, meta_training, reset_env=True, devices=[], sampl
 
     logger.info("Task Fine-tuning parameters %s", args)
 
-    if meta_training:
-        cuda_magic()
+    # if meta_training:
+    #     cuda_magic()
 
     if args.num_train_epochs > 0:
         global_step, tr_loss, te_loss = train(args, train_dataset, model, tokenizer, meta_training)

@@ -13,10 +13,10 @@ from torch.nn import CrossEntropyLoss, MSELoss
 
 from transformers import (BertConfig,
                         PreTrainedModel)
-from transformers.modeling_bert import (
-                        BertAttention, BertLayerNorm, BertPreTrainedModel,
+from transformers.models.bert.modeling_bert import (
+                        BertAttention, BertPreTrainedModel,
                         BertModel, BertIntermediate, BertOutput)
-
+                        
 def gelu(x):
     """Implementation of the gelu activation function.
         For information: OpenAI GPT's gelu is slightly different (and gives slightly different results):
@@ -56,7 +56,7 @@ class GeneratingMasksAC(BertPreTrainedModel):
         """ Initialize the weights """
         if isinstance(module, (nn.Linear, nn.Embedding)):
             module.weight.data.normal_(mean=0.0, std=self.config.initializer_range)
-        elif isinstance(module, BertLayerNorm):
+        elif isinstance(module, nn.LayerNorm):
             module.bias.data.zero_()
             module.weight.data.fill_(1.0)
         if isinstance(module, nn.Linear) and module.bias is not None:

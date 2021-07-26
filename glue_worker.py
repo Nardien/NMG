@@ -15,11 +15,11 @@ from glue_util import glue_processors as processors
 from glue_util import glue_output_modes as output_modes
 from glue_util import convert_examples_to_features, compute_metrics
 
-from pytorch_transformers import (WEIGHTS_NAME, AdamW, WarmupLinearSchedule,
-                                  BertConfig, BertForSequenceClassification, BertTokenizer,
-                                  DistilBertConfig,
-                                  DistilBertForSequenceClassification,
-                                  DistilBertTokenizer,)
+from transformers import (WEIGHTS_NAME, AdamW, get_linear_schedule_with_warmup,
+                            BertConfig, BertForSequenceClassification, BertTokenizer,
+                            DistilBertConfig,
+                            DistilBertForSequenceClassification,
+                            DistilBertTokenizer,)
 import pickle
 import time
 
@@ -75,7 +75,7 @@ def train(args, train_dataset, model, tokenizer, meta_training):
         {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
         ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
+    scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, t_total)
 
     if args.n_gpu > 1:
         model = torch.nn.DataParallel(model, args.devices)

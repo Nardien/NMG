@@ -21,8 +21,8 @@ from torch.utils.data.distributed import DistributedSampler
 from tensorboardX import SummaryWriter
 from tqdm import tqdm, trange
 
-from pytorch_transformers import (WEIGHTS_NAME, AdamW, WarmupLinearSchedule,
-                                  BertConfig, BertForMaskedLM, BertTokenizer,)
+from transformers import (WEIGHTS_NAME, AdamW, get_linear_schedule_with_warmup,
+                          BertConfig, BertForMaskedLM, BertTokenizer,)
 
 from mask_agent import MaskGenerator
 logger = logging.getLogger(__name__)
@@ -214,7 +214,8 @@ def train(args, train_dataset, model, tokenizer, mask_generator, training=False,
         {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
         ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
+    # scheduler = WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
+    scheduler = get_linear_schedule_with_warmup(optimizer, args.warmup_steps, t_total)
 
     if args.n_gpu > 1:
         model = torch.nn.DataParallel(model, args.task_devices, output_device=0)
@@ -252,7 +253,7 @@ def train(args, train_dataset, model, tokenizer, mask_generator, training=False,
             input_mask = ~inputs.eq(args.pad_token)
             model.train()
             _inputs = {'input_ids':        inputs,
-                       'masked_lm_labels': labels,
+                       'labels': labels,
                        'attention_mask': input_mask,}
 
             outputs = model(**_inputs)

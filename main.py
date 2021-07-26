@@ -34,7 +34,7 @@ from transformers import (BertConfig, BertForMaskedLM, BertModel, BertTokenizer,
                         )
 
 from qa_worker import run_qa
-from visualize import visualize
+# from visualize import visualize
 
 logger = logging.getLogger(__name__)
 figlet = Figlet(font='slant')

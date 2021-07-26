@@ -9,7 +9,7 @@ import logging
 import copy
 import json
 from tqdm import tqdm
-from pytorch_transformers import (AdamW)
+from transformers import AdamW
 from tensorboardX import SummaryWriter
 from nltk.corpus import stopwords
 import numpy as np
