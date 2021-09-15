@@ -50,7 +50,7 @@ I have checked that the code successfully works for both tasks, however, please 
 
 ## TODOs
 
-- [v]  Update the code for support on the text classification
+- [x]  Update the code for support on the text classification
 - [ ]  Clean up the code including the removal of useless configurations
 - [ ]  Add the text corpus extraction code.
 
