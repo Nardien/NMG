@@ -2,7 +2,7 @@
 
 This is the **Pytorch Implementation** for the paper _Neural Mask Generator: Learning to Generate the Adaptive Maskings for Language Model Adaptation_ (Accepted at EMNLP 2020, https://www.aclweb.org/anthology/2020.emnlp-main.493/)
 
-Now the code supports the Question Answering task.
+Now the code supports the Question Answering task and Text Classification task.
 
 ## Abstract
 <img align="right" width="250" src="https://github.com/Nardien/NMG/blob/master/images/concept_figure.png">
@@ -25,19 +25,32 @@ As the text corpus, you should extract context from each dataset and build it as
 
 ## How to Run
 1. Meta-training
+Question Answering
 ```
 ./run_train.sh 2020xxxx qa squad bert $GPU 
 ```
+Text Classification
+```
+./run_train.sh 2020xxxx glue chemprot bert $GPU
+```
 
 2. Meta-testing
+Question Answering
 ```
 ./run_test.sh 2020xxxx output/squad/bert/2020xxxx_neural qa squad bert $GPU
 $GPUNUM 50 3 0.05
 ```
+Text Classification
+```
+./run_test.sh 2020xxxx output/chemprot/bert/2020xxxx_neural glue chemprot bert $GPU
+$GPUNUM 50 3 0.05
+```
+
+I have checked that the code successfully works for both tasks, however, please feel free to leave it on Issues if you find any problems.
 
 ## TODOs
 
-- [ ]  Update the code for support on the text classification
+- [v]  Update the code for support on the text classification
 - [ ]  Clean up the code including the removal of useless configurations
 - [ ]  Add the text corpus extraction code.
 

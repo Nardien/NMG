@@ -97,7 +97,7 @@ def _parse_args():
                         help="max step argument for task")
     parser.add_argument("--task", type=str, choices=["glue", "qa"], default="qa",
                         help="Decide which task to use")
-    parser.add_argument("--dataset", type=str, choices=["squad", "emrqa", "newsqa"], default="")
+    parser.add_argument("--dataset", type=str, choices=["squad", "emrqa", "newsqa", "chemprot"], default="")
     parser.add_argument("--qa_dataset", type=str, choices=["squad", "emrqa", "newsqa"],
                         default="squad", help="In case of QA, indicate which QA dataset going to use")
     parser.add_argument("--glue_dataset", type=str, choices=["chemprot", "imdb"], default="mnli")
@@ -153,6 +153,8 @@ def argument_allocation(args):
         args.train_data_file = "./dataset/emrQA/emrqa_train.txt"
     elif args.dataset == "newsqa":
         args.train_data_file = "./dataset/NewsQA/newsqa_train.txt"
+    elif args.task == "glue":
+        args.train_data_file = "./dataset/glue_data/" + args.dataset.upper() + "/train_context.txt"
     else:
         raise NotImplementedError
 

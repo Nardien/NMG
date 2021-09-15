@@ -14,6 +14,8 @@ class NMGDataset:
 
         if args.task == "qa":
             from qa_worker import load_examples
+        elif args.task == "glue":
+            from glue_worker import load_examples
         else:
             raise NotImplementedError
 

@@ -17,17 +17,35 @@ model_type=$4
 gpu=$5
 masking="neural"
 
-block_size=382
-num_task_epochs=1
-
-if [ $model_type = "bert" ]; then
-    bsz=4
-elif [ $model_type = "distilbert" ]; then
-    bsz=8
+if [ $task = "qa" ]; then
+    block_size=510
+    num_task_epochs=1
+elif [ $task = "glue" ]; then
+    block_size=254
+    num_task_epochs=5
 fi
 
-replay_start=2000
-masking_prob=0.05
+if [ $model_type = "bert" ]; then
+    if [ $task = "qa" ]; then
+        bsz=4
+    elif [ $task = "glue" ]; then
+        bsz=8
+    fi
+elif [ $model_type = "distilbert" ]; then
+    if [ $task = "qa" ]; then
+        bsz=8
+    elif [ $task = "glue" ]; then
+        bsz=16
+    fi
+fi
+
+if [ $task = "qa" ]; then
+    replay_start=2000
+    masking_prob=0.05
+elif [ $task = "glue" ]; then
+    replay_start=500
+    masking_prob=0.05
+fi
 
 let valid_bsz=4*$bsz
 

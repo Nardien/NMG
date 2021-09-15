@@ -16,7 +16,11 @@ masking_prob=${10}
 
 max_steps=-1
 num_task_inst=-1
-num_train_task_epochs=2
+if [ $task = "qa" ]; then
+    num_train_task_epochs=2
+elif [ $task = "glue" ]; then
+    num_train_task_epochs=3
+fi
 
 checkpoint=$ckpt
 output_dir="./test_logs/logs_$date-1-$dataset"

@@ -38,7 +38,7 @@ class TextDatasetSingle(Dataset):
                 'cached_lm_{}_{}_{}'.format(block_size, file_name, model_type))
 
         # add_special_tokens = tokenizer.add_special_tokens_single_sentence
-        add_special_tokens = tokenizer.add_special_tokens
+        # add_special_tokens = tokenizer.add_special_tokens
 
         print(cached_features_file)
         if os.path.exists(cached_features_file):
@@ -70,21 +70,18 @@ class TextDatasetSingle(Dataset):
                 while len(tokenized_text) >= block_size:
                     tail = True
                     print(str(i) + " ", end='')
-                    input_text = add_special_tokens(tokenized_text[:block_size])
+                    # input_text = add_special_tokens(tokenized_text[:block_size])
+                    input_text = [tokenizer.cls_token_id] + tokenized_text[:block_size] + [tokenizer.sep_token_id]
                     self.examples[str(text_idx)].append(input_text)
                     tokenized_text = tokenized_text[block_size:]
                     i += 1
 
                 if len(tokenized_text) < block_size and not tail:
                     print(str(i) + " ", end='')
-                    if model_type in ['albert', 't5']:
-                        input_text = tokenized_text
-                        while len(input_text) < block_size:
-                            input_text.append(pad_token)
-                    else:
-                        input_text = add_special_tokens(tokenized_text)
-                        while len(input_text) < block_size + 2:
-                            input_text.append(pad_token)
+                    # input_text = add_special_tokens(tokenized_text)
+                    input_text = [tokenizer.cls_token_id] + tokenized_text + [tokenizer.sep_token_id]
+                    while len(input_text) < block_size + 2:
+                        input_text.append(pad_token)
                     self.examples[str(text_idx)].append(input_text)
                     i += 1
 

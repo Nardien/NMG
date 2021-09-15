@@ -35,7 +35,7 @@ def argument_reset(args_origin):
 
     args.task_name = args.glue_dataset
     args.output_dir = os.path.join(args_origin.output_dir, args.task_name.upper())
-    args.data_dir = "/st2/mkkang/dataset/glue_data/" + args.task_name.upper()
+    args.data_dir = "./dataset/glue_data/" + args.task_name.upper()
     args.model_name_or_path = args_origin.output_dir
     args.max_seq_length = 128
     if args.task_name == "imdb":
@@ -415,15 +415,6 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False, meta_training
 
     return dataset
 
-# CUDA_MAGIC -> avoid cuda gpu exploration
-def cuda_magic():
-    start = time.time()
-    tmp = "./dataset/mrqa/cached_newsqa_train_bert-base-uncased_384_MS"
-    with open(tmp, 'rb') as f:
-        _tmp = pickle.load(f)
-    del _tmp
-    print("Elapsed Time for CUDA Magic... {} sec".format(time.time() - start))
-
 def run_glue(args, train_dataset, meta_training, reset_env=True, devices=[], sampled_keys=None):
     # Reallocate argument for Task
     args = argument_reset(args)
@@ -462,8 +453,6 @@ def run_glue(args, train_dataset, meta_training, reset_env=True, devices=[], sam
 
     logger.info("Task Fine-tuning parameters %s", args)
 
-    if meta_training:
-        cuda_magic()
     if args.num_train_epochs > 0:
         global_step, tr_loss, te_loss = train(args, train_dataset, model, tokenizer, meta_training)
         logger.info(" global_step = %s, average loss = %s", global_step, tr_loss)
