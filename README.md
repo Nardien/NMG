@@ -25,6 +25,7 @@ As the text corpus, you should extract context from each dataset and build it as
 
 ## How to Run
 1. Meta-training
+
 Question Answering
 ```
 ./run_train.sh 2020xxxx qa squad bert $GPU 
@@ -35,6 +36,7 @@ Text Classification
 ```
 
 2. Meta-testing
+
 Question Answering
 ```
 ./run_test.sh 2020xxxx output/squad/bert/2020xxxx_neural qa squad bert $GPU
