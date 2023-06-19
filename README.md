@@ -53,8 +53,8 @@ I have checked that the code successfully works for both tasks, however, please 
 ## TODOs
 
 - [x]  Update the code for support on the text classification
-- [ ]  Clean up the code including the removal of useless configurations
-- [ ]  Add the text corpus extraction code.
+- [x]  Clean up the code including the removal of useless configurations
+- [x]  Add the text corpus extraction code.
 
 ## Citation
 If you found this work useful, please cite our work.
